@@ -1,9 +1,11 @@
-let a: number = 20;
+import express from "express";
+import userRouter from "./routes/user.route";
 
-const b: number = 10.5;
+const app = express();
+const port = 3000;
+app.use(express.json());
+app.use("/users", userRouter);
 
-let fullname: string = "Victor Ramon";
-
-const isActive: boolean = false;
-
-console.log(a, b, fullname, isActive);
+app.listen(process.env.PORT || port, () => {
+  console.log(`App running on port ${process.env.PORT || port}!`);
+});
