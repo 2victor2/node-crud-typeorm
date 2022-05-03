@@ -23,7 +23,7 @@ export default class UserController {
   }
   async index(req: Request, res: Response) {
     try {
-      const users = listUsersService();
+      const users = await listUsersService();
 
       return res.status(200).send(users);
     } catch (err) {
