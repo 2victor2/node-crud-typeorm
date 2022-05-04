@@ -17,5 +17,10 @@ export interface IUserLogin {
 }
 
 export interface IUserAuth {
-  authorization?: string;
+  userId: string;
+}
+
+export interface IUserUpdate {
+  password: string;
+  userId: string;
 }
