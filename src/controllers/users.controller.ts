@@ -7,7 +7,7 @@ import listUsersService from "../services/listUsers.service";
 
 export default class UserController {
   async store(req: Request, res: Response) {
-    const { email, name, password } = req.body;
+    const { email, name, password } = req.newUser;
 
     try {
       const newUser = await createUserService({ email, name, password });
