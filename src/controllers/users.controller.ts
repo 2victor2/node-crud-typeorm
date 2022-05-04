@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import createUserService from "../services/createUser.service";
+import listUserService from "../services/listUser.service";
 import listUsersService from "../services/listUsers.service";
 
 export default class UserController {
@@ -8,7 +9,7 @@ export default class UserController {
 
     try {
       const newUser = await createUserService({ email, name, password });
-      
+
       return res.status(201).json(newUser);
     } catch (err) {
       if (err instanceof Error) {
@@ -28,6 +29,24 @@ export default class UserController {
       return res.status(200).send(users);
     } catch (err) {
       return res.status(500);
+    }
+  }
+  async show(req: Request, res: Response) {
+    try {
+      const user = await listUserService({
+        authorization: req.headers.authorization,
+      });
+
+      return res.status(200).send(user);
+    } catch (err) {
+      if (err instanceof Error) {
+        return res.status(400).send({
+          error: err.name,
+          message: err.message,
+        });
+      } else {
+        return res.status(500);
+      }
     }
   }
 }

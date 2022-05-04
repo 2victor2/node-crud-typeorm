@@ -6,5 +6,6 @@ const userController = new UserController();
 
 routes.post("", userController.store);
 routes.get("", userController.index);
+routes.get("/me", userController.show);
 
 export default routes;

@@ -10,3 +10,12 @@ export interface IUserCreate {
   name: string;
   password: string;
 }
+
+export interface IUserLogin {
+  email: string;
+  password: string;
+}
+
+export interface IUserAuth {
+  authorization?: string;
+}
