@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { AppError, handleError } from "../errors/appError";
 import changePasswordService from "../services/changePassword.service";
 import createUserService from "../services/createUser.service";
 import deleteUserService from "../services/deleteUser.service";
@@ -14,13 +15,8 @@ export default class UserController {
 
       return res.status(201).json(newUser);
     } catch (err) {
-      if (err instanceof Error) {
-        return res.status(400).send({
-          error: err.name,
-          message: err.message,
-        });
-      } else {
-        return res.status(500);
+      if (err instanceof AppError) {
+        handleError(err, res);
       }
     }
   }
@@ -30,7 +26,9 @@ export default class UserController {
 
       return res.status(200).send(users);
     } catch (err) {
-      return res.status(500);
+      if (err instanceof AppError) {
+        handleError(err, res);
+      }
     }
   }
   async show(req: Request, res: Response) {
@@ -41,13 +39,8 @@ export default class UserController {
 
       return res.status(200).send(user);
     } catch (err) {
-      if (err instanceof Error) {
-        return res.status(400).send({
-          error: err.name,
-          message: err.message,
-        });
-      } else {
-        return res.status(500);
+      if (err instanceof AppError) {
+        handleError(err, res);
       }
     }
   }
@@ -70,13 +63,8 @@ export default class UserController {
           .send({ message: "Password updated with success!" });
       }
     } catch (err) {
-      if (err instanceof Error) {
-        return res.status(400).send({
-          error: err.name,
-          message: err.message,
-        });
-      } else {
-        return res.status(500);
+      if (err instanceof AppError) {
+        handleError(err, res);
       }
     }
   }
@@ -88,13 +76,8 @@ export default class UserController {
         return res.status(200).json({ message: "User deleted with success" });
       }
     } catch (err) {
-      if (err instanceof Error) {
-        return res.status(400).send({
-          error: err.name,
-          message: err.message,
-        });
-      } else {
-        return res.status(500);
+      if (err instanceof AppError) {
+        handleError(err, res);
       }
     }
   }

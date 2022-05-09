@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { IUserCreate } from "../interfaces/user";
 import { SchemaOf } from "yup";
 import * as yup from "yup";
+import { AppError, handleError } from "../errors/appError";
 
 export const userCreateSchema: SchemaOf<IUserCreate> = yup.object().shape({
   name: yup.string().required(),
@@ -20,13 +21,13 @@ export const validateUserCreate = (schema: SchemaOf<IUserCreate>) => {
 
         req.newUser = validatedData;
       } catch (err: any) {
-        return res.status(400).json({
-          error: err.errors?.join(", "),
-        });
+        throw new AppError(400, err.errors?.join(", "));
       }
       next();
     } catch (err) {
-      return res.status(400).send({});
+      if (err instanceof AppError) {
+        handleError(err, res);
+      }
     }
   };
 };

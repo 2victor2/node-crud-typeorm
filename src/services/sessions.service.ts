@@ -3,6 +3,7 @@ import { User } from "../entities/user.entity";
 import { IUserLogin } from "../interfaces/user";
 import * as bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { AppError } from "../errors/appError";
 
 const sessionsService = async ({ email, password }: IUserLogin) => {
   const userRepository = AppDataSource.getRepository(User);
@@ -11,10 +12,10 @@ const sessionsService = async ({ email, password }: IUserLogin) => {
   const account = users.find((user) => user.email === email);
 
   if (!account) {
-    throw new Error("Wrong email/password");
+    throw new AppError(409, "Wrong email/password");
   }
   if (!bcrypt.compareSync(password, account.password)) {
-    throw new Error("Wrong email/password");
+    throw new AppError(409, "Wrong email/password");
   }
 
   const token = jwt.sign(
@@ -26,4 +27,4 @@ const sessionsService = async ({ email, password }: IUserLogin) => {
   return { token };
 };
 
-export default sessionsService
+export default sessionsService;
